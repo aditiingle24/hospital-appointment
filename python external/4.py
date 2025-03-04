@@ -1,0 +1,6 @@
+a=({'a':1,'b':2,'c':3})
+print(a)
+a.update({'d':4})
+print(a)
+print(a.values())
+print(a.keys())

@@ -1,0 +1,66 @@
+class sample {
+    static int a,b;
+    void getdata(int a, int b){
+        this.a=a;
+        this.b=b;
+    }
+    static void display(){
+        System.out.println(a+b);
+        System.out.println((a+b)/2);
+    }
+    public static void main(String args[])
+    {
+        sample ob= new sample();
+        ob.getdata(5,5);
+        sample.display();
+    }
+    }    
+
+
+
+class paracon {
+    int i;
+    String n;
+    paracon(int id,String na)
+    {
+        i=id;
+        n=na;
+    }
+    void display()
+    {
+        System.out.println("rollno "+i+"name "+n);
+    }
+    public static void main(String args[])
+    {
+        paracon ob= new paracon(1,"aditi");
+        ob.display();
+        paracon ob1= new paracon(2,"hi");
+
+
+
+
+
+
+class cons {
+    int a;
+    String n;
+    void display(){
+        System.out.println(a+" "+n);
+    }
+    public static void main(String args[])
+    {
+        cons ob= new cons();
+        cons ob1= new cons();
+        ob1.display();
+        ob.display();
+    }
+    
+}
+
+        ob1.display();
+    }    
+}
+
+
+
+

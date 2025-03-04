@@ -1,0 +1,50 @@
+
+import random
+before=50
+poition_health=random.randint(1,50)
+print(poition_health)
+after=before+poition_health
+rem=100-after
+print(rem)
+
+
+
+import math
+a=10.67
+print(math.floor(a))
+print(math.ceil(a))
+print(round(a))
+
+
+
+email=input("enter email address:").strip()
+user=email[:email.index("@")]
+print(user)
+domain=email[email.index("@"):]
+print(domain)
+output="username is {} and domain is {}" .format(user,domain)
+print(output)
+
+
+
+n=input()
+a=input()
+l=input()
+print("hello ", n , "age is ", a ,"location ",l)
+
+
+
+known_users=["aditi","vivek","manohar","neha","varsh","satya"]
+print(known_users)
+print(len(known_users))
+while True:
+    print("hi this is trivia robot.how is ur day gng?")
+    name=input("enter name")
+    if name in known_users:
+        print("hi")
+    else:
+        res=input("u r not recognized. would you like to add uo?(y/n)").lower()
+        if(res=='y'):
+            n=input("enter name")
+            known_users.append(n)
+            print(known_users)

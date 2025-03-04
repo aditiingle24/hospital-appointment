@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointment Confirmation</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Appointment Confirmation</h1>
+    </header>
+
+    <h2>Choose Your Doctor</h2>
+    <p>Thank you for booking your appointment. Below are your details:</p>
+    
+    <div class="appointment-details">
+      <p><strong>Hospital:</strong> <span id="selected-hospital"></span></p>
+      <p><strong>Specialization:</strong> <span id="selected-problem"></span></p>
+      
+      <!-- Select doctor -->
+      <label for="doctor">Choose a Doctor:</label>
+      <select id="doctor" name="doctor" required>
+        <option value="">--Select a Doctor--</option>
+      </select>
+
+      <!-- Doctor details and timing slots -->
+      <div id="doctor-details" style="display: none;">
+        <h3>Doctor Details:</h3>
+        <p id="doctor-info"></p>
+
+        <label for="time-slot">Choose a Time Slot:</label>
+        <select id="time-slot" name="time-slot" required>
+          <option value="">--Select a Time Slot--</option>
+        </select>
+
+        <button id="book-appointment">Book Appointment</button>
+      </div>
+
+      <p id="appointment-message"></p>
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    document.getElementById("selected-hospital").innerText = urlParams.get("hospital") || "N/A";
+    document.getElementById("selected-problem").innerText = urlParams.get("problem") || "N/A";
+
+    // Doctor options for each health problem
+    const doctorsData = {
+      cardiologist: [
+        { name: "Dr. John Doe", details: "Experienced cardiologist with 10 years of experience.", slots: ["9:00 AM", "11:00 AM", "2:00 PM"] },
+        { name: "Dr. Jane Smith", details: "Specializes in heart surgery and cardiology.", slots: ["10:00 AM", "1:00 PM", "4:00 PM"] }
+      ],
+      ent: [
+        { name: "Dr. Alex White", details: "Specialist in ear, nose, and throat treatment.", slots: ["9:00 AM", "12:00 PM", "3:00 PM"] },
+        { name: "Dr. Rachel Green", details: "Expert in pediatric ENT care.", slots: ["10:00 AM", "1:00 PM", "4:00 PM"] }
+      ]
+    };
+
+    const doctorSelect = document.getElementById("doctor");
+    const doctorDetailsDiv = document.getElementById("doctor-details");
+    const timeSlotSelect = document.getElementById("time-slot");
+    const appointmentMessage = document.getElementById("appointment-message");
+    const doctorInfo = document.getElementById("doctor-info");
+
+    function populateDoctors(specialization) {
+      const doctors = doctorsData[specialization.toLowerCase()] || [];
+      doctorSelect.innerHTML = '<option value="">--Select a Doctor--</option>';
+      doctors.forEach(doctor => {
+        const option = document.createElement("option");
+        option.value = doctor.name;
+        option.textContent = doctor.name;
+        doctorSelect.appendChild(option);
+      });
+    }
+
+    doctorSelect.addEventListener("change", function () {
+      const selectedDoctorName = doctorSelect.value;
+      const selectedSpecialization = urlParams.get("problem");
+
+      if (selectedDoctorName) {
+        const doctor = doctorsData[selectedSpecialization.toLowerCase()]
+          .find(doc => doc.name === selectedDoctorName);
+
+        doctorInfo.innerHTML = `
+          <strong>Name:</strong> ${doctor.name}<br>
+          <strong>Details:</strong> ${doctor.details}
+        `;
+
+        timeSlotSelect.innerHTML = '<option value="">--Select a Time Slot--</option>';
+        doctor.slots.forEach(slot => {
+          const option = document.createElement("option");
+          option.value = slot;
+          option.textContent = slot;
+          timeSlotSelect.appendChild(option);
+        });
+
+        doctorDetailsDiv.style.display = 'block';
+      } else {
+        doctorDetailsDiv.style.display = 'none';
+      }
+    });
+
+    document.getElementById("book-appointment").addEventListener("click", function () {
+      const selectedDoctorName = doctorSelect.value;
+      const selectedTimeSlot = timeSlotSelect.value;
+
+      if (selectedDoctorName && selectedTimeSlot) {
+        appointmentMessage.innerText = `Appointment booked successfully with ${selectedDoctorName} at ${selectedTimeSlot}.`;
+        appointmentMessage.style.color = 'green';
+      } else {
+        appointmentMessage.innerText = "Please select a doctor and a time slot.";
+        appointmentMessage.style.color = 'red';
+      }
+    });
+
+    window.onload = function () {
+      const selectedSpecialization = urlParams.get("problem");
+      if (selectedSpecialization) {
+        populateDoctors(selectedSpecialization);
+      }
+    };
+  </script>
+
+</body>
+</html>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    color: #333;
+  }
+
+  .container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 2em;
+    border-radius: 12px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    text-align: center;
+  }
+
+  header {
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 2.5em;
+    color: #333;
+  }
+
+  label {
+    margin-top: 1em;
+    font-size: 1.1em;
+    display: block;
+  }
+
+  select {
+    padding: 0.7em;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1em;
+    width: 100%;
+  }
+
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.9em;
+    margin-top: 1.5em;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+    width: 100%;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  p {
+    font-size: 1em;
+  }
+</style>
